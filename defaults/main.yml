@@ -1,0 +1,67 @@
+## RabbitMQ application credentials
+## Ref: http://rabbitmq.com/access-control.html
+##
+rabbitmq_username: guest
+rabbitmq_password: guest
+
+## RabbitMQ default VirtualHost
+## Ref: https://www.rabbitmq.com/vhosts.html
+##
+rabbitmq_vhost: "/"
+
+## Erlang cookie to determine whether different nodes are allowed to communicate with each other
+## Ref: https://www.rabbitmq.com/clustering.html
+##
+rabbitmq_erlang_cookie: aaaaa
+
+## RabbitMQ Memory high watermark
+## Ref: http://www.rabbitmq.com/memory.html
+##
+rabbitmq_memory_high_watermark: 256MB
+
+## EPMD port for peer discovery service used by RabbitMQ nodes and CLI tools
+## Ref: https://www.rabbitmq.com/clustering.html
+##
+rabbitmq_epmd_port: 4369
+
+## AMQP port
+rabbitmq_amqp_port: 5672
+
+## Manager port
+rabbitmq_manager_port: 15672
+
+## Set to true to precompile parts of RabbitMQ with HiPE, a just-in-time
+## compiler for Erlang. This will increase server throughput at the cost of
+## increased startup time. You might see 20-50% better performance at the cost
+## of a few minutes delay at startup.
+rabbitmq_hipe_compile: 0
+
+## Number of replicas
+rabbitmq_replica_count: 3
+
+rabbitmq_image_repository: rabbitmq
+rabbitmq_image_tag: 3.7-alpine
+rabbitmq_image_pull_policy: IfNotPresent
+
+
+## Statefulsets rolling update update strategy
+## Ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#rolling-update
+##
+rabbitmq_update_strategy: OnDelete
+
+## We usually recommend not to specify default resources and to leave this as
+## a conscious choice for the user. This also increases chances charts run on
+## environments with little resources, such as Minikube. If you do want to
+## specify resources, uncomment the following lines, adjust them as necessary,
+## and remove the curly braces after 'resources:'.
+## If you decide to set the memory limit, make sure to also change the
+## rabbitmqMemoryHighWatermark following the formula:
+##   rabbitmqMemoryHighWatermark = 0.4 * resources.limits.memory
+##
+rabbitmq_resources: {}
+# limits:
+#  cpu: 100m
+#  memory: 1Gi
+# requests:
+#  cpu: 100m
+#  memory: 1Gi

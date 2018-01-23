@@ -1,0 +1,95 @@
+apiVersion: apps/v1beta1
+kind: StatefulSet
+metadata:
+  name: rabbitmq
+  labels:
+    app: rabbitmq
+spec:
+  serviceName: rabbitmq
+  replicas: {{ rabbitmq_replica_count }}
+  updateStrategy:
+    type: {{ rabbitmq_update_strategy }}
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: rabbitmq
+      containers:
+        - name: rabbitmq
+          image: {{ rabbitmq_image_repository }}:{{ rabbitmq_image_tag }}
+          imagePullPolicy: {{ rabbitmq_image_pull_policy }}
+          ports:
+            - name: epmd
+              protocol: TCP
+              containerPort: 4369
+            - name: amqp
+              protocol: TCP
+              containerPort: 5672
+            - name: http
+              protocol: TCP
+              containerPort: 15672
+          livenessProbe:
+            exec:
+              command:
+                - rabbitmqctl
+                - status
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command:
+                - rabbitmqctl
+                - status
+            initialDelaySeconds: 10
+            timeoutSeconds: 5
+          env:
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: RABBITMQ_USE_LONGNAME
+              value: "true"
+            - name: RABBITMQ_NODENAME
+              value: "rabbit@$(MY_POD_IP)"
+            - name: K8S_SERVICE_NAME
+              value: rabbitmq
+            - name: RABBITMQ_ERLANG_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq
+                  key: rabbitmq-erlang-cookie
+            - name: RABBITMQ_HIPE_COMPILE
+              value: "{{ rabbitmq_hipe_compile }}"
+            - name: RABBITMQ_DEFAULT_USER
+              value: "{{ rabbitmq_username }}"
+            - name: RABBITMQ_DEFAULT_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_DEFAULT_VHOST
+              value: "{{ rabbitmq_vhost }}"
+          resources:
+            {{ rabbitmq_resources | to_nice_yaml(indent=2) | indent(12) }}
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/rabbitmq
+            - name: config
+              mountPath: /etc/rabbitmq
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app: rabbitmq
+      volumes:
+        - name: config
+          configMap:
+            name: rabbitmq
+        - name: data
+          emptyDir: {}
