@@ -4,7 +4,7 @@ Ansible role to install RabbitMQ HA on Kubernetes.
 
 ## Dependencies
 
-`kubectl` needs to be installed on the host  targeted by the role.
+`kubectl` needs to be installed on the host targeted by the role.
 
 ## Example Playbook
 
