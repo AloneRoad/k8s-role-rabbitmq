@@ -9,7 +9,7 @@ metadata:
     app: rabbitmq
 spec:
   capacity:
-    storage: 100Mi
+    storage: {{ rabbitmq_persistent_volume_size }}
   accessModes:
     - ReadWriteOnce
   {{ volume | to_nice_yaml(indent=2) | indent(2) }}

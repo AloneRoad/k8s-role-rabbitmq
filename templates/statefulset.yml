@@ -100,7 +100,7 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: 100Mi
+            storage: {{ rabbitmq_persistent_volume_size }}
         selector:
           matchLabels:
             type: local

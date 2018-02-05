@@ -73,3 +73,4 @@ rabbitmq_persistent_volumes:
       path: /tmp/rabbitmq-pv2
   - hostPath:
       path: /tmp/rabbitmq-pv3
+rabbitmq_persistent_volume_size: 100Mi

@@ -1,6 +1,6 @@
 ---
 
-- name: Install rabbitmq-ha
+- name: Install rabbitmq
   command: kubectl apply -f -
   args:
     stdin: "{{ item }}"
