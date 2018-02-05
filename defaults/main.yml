@@ -47,7 +47,7 @@ rabbitmq_image_pull_policy: IfNotPresent
 ## Statefulsets rolling update update strategy
 ## Ref: https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/#rolling-update
 ##
-rabbitmq_update_strategy: OnDelete
+rabbitmq_update_strategy: RollingUpdate
 
 ## We usually recommend not to specify default resources and to leave this as
 ## a conscious choice for the user. This also increases chances charts run on
