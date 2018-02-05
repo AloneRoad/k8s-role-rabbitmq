@@ -11,4 +11,5 @@
     - "{{ lookup('template', 'secret.yml') }}"
     - "{{ lookup('template', 'service.yml') }}"
     - "{{ lookup('template', 'serviceaccount.yml') }}"
+    - "{{ lookup('template', 'persistentvolume.yml') }}"
     - "{{ lookup('template', 'statefulset.yml') }}"

@@ -65,3 +65,11 @@ rabbitmq_resources: {}
 # requests:
 #  cpu: 100m
 #  memory: 1Gi
+
+rabbitmq_persistent_volumes:
+  - hostPath:
+      path: /tmp/rabbitmq-pv1
+  - hostPath:
+      path: /tmp/rabbitmq-pv2
+  - hostPath:
+      path: /tmp/rabbitmq-pv3

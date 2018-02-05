@@ -1,7 +1,9 @@
+{% for volume in rabbitmq_persistent_volumes %}
+---
 kind: PersistentVolume
 apiVersion: v1
 metadata:
-  name: rabbitmq-pv2
+  name: rabbitmq-pv{{ loop.index }}
   labels:
     type: local
     app: rabbitmq
@@ -10,5 +12,5 @@ spec:
     storage: 100Mi
   accessModes:
     - ReadWriteOnce
-  hostPath:
-    path: "/tmp/rabbitmq-pv2"
+  {{ volume | to_nice_yaml(indent=2) | indent(2) }}
+{% endfor %}
